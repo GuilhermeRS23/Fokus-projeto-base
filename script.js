@@ -29,7 +29,7 @@ musicaFocoInput.addEventListener('change', () => {
 })
 
 focoBt.addEventListener('click', () => {
-    tempoSegundos = 1500;
+    tempoSegundos = 15;
     alterarContexto('foco');
     focoBt.classList.add('active');
 });
@@ -48,7 +48,7 @@ longoBt.addEventListener('click', () => {
 
 function alterarContexto(contexto) {
     exibirTempo()
-    
+
     botoes.forEach(function (contexto) {
         contexto.classList.remove('active')
     })
@@ -80,6 +80,12 @@ const contagemRegressiva = () => {
     if (tempoSegundos <= 0) {
         tempFinish.play();
         alert('Tempo Finalizado!')
+        const focoAtivo = html.getAttribute('data-contexto') == 'foco'
+        
+        if (focoAtivo) {
+            const evento = new CustomEvent('FocoFinalizado')
+            document.dispatchEvent(evento)
+        }
         zerar()
         return
     }
@@ -111,12 +117,12 @@ function zerar() {
 }
 
 function alterarIconePauseOuComeçar(status) {
-    iconPlayOuPause.setAttribute('src',`imagens/${status}.png`)
+    iconPlayOuPause.setAttribute('src', `imagens/${status}.png`)
 }
 
 function exibirTempo() {
     let tempo = new Date(tempoSegundos * 1000)
-    let tempoFormatado = tempo.toLocaleTimeString('pt-br' , {minute:'2-digit', second:'2-digit'});
+    let tempoFormatado = tempo.toLocaleTimeString('pt-br', { minute: '2-digit', second: '2-digit' });
     tempoEmTela.innerHTML = `${tempoFormatado}`;
 }
 
